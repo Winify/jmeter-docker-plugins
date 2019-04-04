@@ -1,12 +1,15 @@
-FROM alpine:3.7
+FROM openjdk:8-alpine
 LABEL maintainer="vgraics"
 
 ARG JMETER_VERSION=5.0
 
+ENV PROTOCOL=http
+ENV DOMAIN=localhost
+ENV PORT=8080
+
 # JMeter install
 RUN apk update && \
-    apk add openjdk8 && \
-    mkdir opt/ && \
+    apk add --no-cache nss && \
     mkdir opt/tests && \
     mkdir opt/results && \
     mkdir tmp/jmeter && \
