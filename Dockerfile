@@ -10,6 +10,7 @@ ENV PORT=8080
 # JMeter install
 RUN apk update && \
     apk add --no-cache nss && \
+    apk add curl && \
     mkdir opt/tests && \
     mkdir opt/results && \
     mkdir tmp/jmeter && \

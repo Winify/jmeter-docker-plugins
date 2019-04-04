@@ -22,9 +22,19 @@ if [ -f $testfile ];
         echo "Start Running JMeter on `date`..."
 
         echo "Setting Server Hostname set to: $PROTOCOL://$DOMAIN:$PORT"
+        host=$PROTOCOL://$DOMAIN:$PORT
         sed -r "s|protocol\">(.*)</|protocol\">$PROTOCOL</|" -i $testfile
         sed -r "s|domain\">(.*)</|domain\">$DOMAIN</|" -i $testfile
         sed -r "s|port\">(.*)</|port\">$PORT</|" -i $testfile
+
+        echo "Running with $THREADS threads, $RAMP_UP seconds ramp up"
+        sed -r "s|num_threads\">(.*)</|num_threads\">$THREADS</|" -i $testfile
+        sed -r "s|ramp_time\">(.*)</|ramp_time\">$RAMP_UP</|" -i $testfile
+
+        until $(curl --output /dev/null --silent --head --fail $host); do
+            echo "Waiting for server to start..."
+            sleep 5
+        done
 
         # Setting JVM ARGS
         set -e
